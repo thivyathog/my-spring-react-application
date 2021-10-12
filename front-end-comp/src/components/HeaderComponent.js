@@ -14,7 +14,12 @@ class HeaderComponent extends Component {
             <div>
                 <header>
                     <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                    <div><a href="" className="navbar-brand">Employee Tracker App</a></div>
+                    <div>
+                        <span className="navbar-toggler-icon"></span>
+                        &ensp;
+                        <a href="" className="navbar-brand">Employee Tracker App</a>
+                        
+                    </div>
                     </nav>
                 </header>
             </div>
