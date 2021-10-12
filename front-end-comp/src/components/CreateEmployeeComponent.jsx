@@ -6,21 +6,26 @@ class CreateEmployeeComponent extends Component {
         super(props)
 
         this.state = {
-            // step 2
+           
             id: this.props.match.params.id,
             firstName: '',
             lastName: '',
-            emailId: ''
+            emailId: '',
+            annualLeave : '',
+            casualLeave :'',
+            medicalLeave :'',
+            totalLeave:''
         }
         this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this);
         this.changeLastNameHandler = this.changeLastNameHandler.bind(this);
         this.saveOrUpdateEmployee = this.saveOrUpdateEmployee.bind(this);
+        this.changeAnnualLeaveHandler = this.changeAnnualLeaveHandler.bind(this);
+        this.changeCasualLeaveHandler = this.changeCasualLeaveHandler.bind(this);
+        this.changeMedicalLeaveHandler = this.changeMedicalLeaveHandler.bind(this);
     }
 
-    // step 3
+  
     componentDidMount(){
-
-        // step 4
         if(this.state.id === '_add'){
             return
         }else{
@@ -28,14 +33,16 @@ class CreateEmployeeComponent extends Component {
                 let employee = res.data;
                 this.setState({firstName: employee.firstName,
                     lastName: employee.lastName,
-                    emailId : employee.emailId
+                    emailId : employee.emailId, annualLeave : employee.annualLeave,
+                    casualLeave :employee.casualLeave,
+                    medicalLeave :employee.medicalLeave
                 });
             });
         }        
     }
     saveOrUpdateEmployee = (e) => {
         e.preventDefault();
-        let employee = {firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId};
+        let employee = {firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId,annualLeave: this.state.annualLeave,casualLeave: this.state.casualLeave,medicalLeave: this.state.medicalLeave};
         console.log('employee => ' + JSON.stringify(employee));
 
         // step 5
@@ -49,7 +56,7 @@ class CreateEmployeeComponent extends Component {
             });
         }
     }
-    
+
     changeFirstNameHandler= (event) => {
         this.setState({firstName: event.target.value});
     }
@@ -62,6 +69,15 @@ class CreateEmployeeComponent extends Component {
         this.setState({emailId: event.target.value});
     }
 
+    changeAnnualLeaveHandler= (event) => {
+        this.setState({annualLeave: event.target.value});
+    }
+    changeCasualLeaveHandler= (event) => {
+        this.setState({casualLeave: event.target.value});
+    }
+    changeMedicalLeaveHandler= (event) => {
+        this.setState({medicalLeave: event.target.value});
+    }
     cancel(){
         this.props.history.push('/employees');
     }
@@ -99,6 +115,23 @@ class CreateEmployeeComponent extends Component {
                                             <label> Email Id: </label>
                                             <input placeholder="Email Address" name="emailId" className="form-control" 
                                                 value={this.state.emailId} onChange={this.changeEmailHandler}/>
+                                        </div>
+                                        <div className = "form-group">
+                                            <label> Annual Leave </label>
+                                            <input placeholder="Annual leave" name="annualLeave" className="form-control"
+                                                   value={this.state.annualLeave} onChange={this.changeAnnualLeaveHandler}/>
+                                        </div>
+
+                                        <div className = "form-group">
+                                            <label> Casual Leave: </label>
+                                            <input placeholder="Entitled Leave" name="casualLeave" className="form-control"
+                                                   value={this.state.casualLeave} onChange={this.changeCasualLeaveHandler}/>
+                                        </div>
+
+                                        <div className = "form-group">
+                                            <label> Medical Leave </label>
+                                            <input placeholder="Entitled Leave" name="medicalLeave" className="form-control"
+                                                   value={this.state.medicalLeave} onChange={this.changeMedicalLeaveHandler}/>
                                         </div>
 
                                         <button className="btn btn-success" onClick={this.saveOrUpdateEmployee}>Save</button>

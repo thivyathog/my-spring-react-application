@@ -36,6 +36,18 @@ class ViewEmployeeComponent extends Component {
                             <label> Employee Email ID: </label>
                             <div> { this.state.employee.emailId }</div>
                         </div>
+                        <div className = "row">
+                            <label> Remaining Annual Leave Count: </label>
+                            <div> { this.state.employee.annualLeave }</div>
+                        </div>
+                        <div className = "row">
+                            <label> Remaining Casual Leave Count: </label>
+                            <div> { this.state.employee.casualLeave }</div>
+                        </div>
+                        <div className = "row">
+                            <label> Remaining Medical Leave Count: </label>
+                            <div> { this.state.employee.medicalLeave }</div>
+                        </div>
                     </div>
 
                 </div>
