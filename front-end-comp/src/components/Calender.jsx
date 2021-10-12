@@ -1,5 +1,18 @@
 import React from "react";
-import {format,startOfMonth,startOfWeek,addDays,endOfMonth,endOfWeek,addMonths,subMonths,isSameMonth,isSameDay,parse} from "date-fns";
+import {
+    format,
+    startOfMonth,
+    startOfWeek,
+    addDays,
+    endOfMonth,
+    endOfWeek,
+    addMonths,
+    subMonths,
+    isSameMonth,
+    isSameDay,
+    parse,
+    subDays
+} from "date-fns";
 
 class Calendar extends React.Component {
     state = {
@@ -13,14 +26,14 @@ class Calendar extends React.Component {
         return (
             <div className="header row flex-middle">
                 <div className="col col-start">
-                    <div className="icon" onClick={this.prevMonth}>
+                    <div className="icon" onClick={this.prevDay}>
                         chevron_left
                     </div>
                 </div>
                 <div className="col col-center">
                     <span>{format(this.state.currentMonth, dateFormat)}</span>
                 </div>
-                <div className="col col-end" onClick={this.nextMonth}>
+                <div className="col col-end" onClick={this.nextDay}>
                     <div className="icon">chevron_right</div>
                 </div>
             </div>
@@ -105,7 +118,16 @@ class Calendar extends React.Component {
             currentMonth: subMonths(this.state.currentMonth, 1)
         });
     };
-
+    prevDay = () => {
+        this.setState({
+            currentMonth: subDays(this.state.currentMonth, 1)
+        });
+    };
+    nextDay = () => {
+        this.setState({
+            currentMonth: subDays(this.state.currentMonth, -1)
+        });
+    };
     render() {
         return (
             <div className="calendar">

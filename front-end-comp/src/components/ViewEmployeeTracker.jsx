@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import EmployeeService from '../services/EmployeeService'
 import Calender from './Calender';
+import {format} from "date-fns";
 
 class ViewEmployeeTracker extends Component {
     constructor(props) {
@@ -36,44 +37,54 @@ class ViewEmployeeTracker extends Component {
         this.props.history.push('/add-employee/_add');
     }
 
+
+    renderDate(props) {
+
+
+        return (
+            <table className = "table table-striped table-bordered">
+
+                <thead>
+                <tr>
+                    <th> Employee Name</th>
+                    <th> Employee  Id</th>
+                    <th> Type of Leave</th>
+                    <th> Remaining</th>
+                    <th> Reason</th>
+                    <th> </th>
+                </tr>
+                </thead>
+                <tbody>
+                {
+                    this.state.employees.map(
+                        employee =>
+                            <tr key = {employee.id}>
+                                <td> { employee.firstName}{employee.lastName} </td>
+                                <td> {employee.id}</td>
+                                <td> Annual</td>
+                                <td>Annaul : {employee.annualLeave}<br/>
+                                    casual : {employee.casualLeave}<br/>
+                                    Medical : {employee.medicalLeave}<br/>
+                                </td>
+                                <td></td>
+                                <td>
+
+                                    <button style={{marginLeft: "10px"}} onClick={ () => this.deleteEmployee(employee.id)} className="btn btn-danger">Decline </button>
+                                    <button style={{marginLeft: "10px"}} onClick={ () => this.viewEmployee(employee.id)} className="btn btn-info">Approve </button>
+                                </td>
+                            </tr>
+                    )
+                }
+                </tbody>
+            </table>
+        );
+    }
+
     render() {
         return (<div><Calender>
             </Calender>
-                <table className = "table table-striped table-bordered">
+                {this.renderDate()}
 
-                    <thead>
-                    <tr>
-                        <th> Employee Name</th>
-                        <th> Employee  Id</th>
-                        <th> Type of Leave</th>
-                        <th> Remaining</th>
-                        <th> Reason</th>
-                        <th> </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        this.state.employees.map(
-                            employee =>
-                                <tr key = {employee.id}>
-                                    <td> { employee.firstName}{employee.lastName} </td>
-                                    <td> {employee.id}</td>
-                                    <td> Annual</td>
-                                    <td>Annaul : {employee.annualLeave}<br/>
-                                        casual : {employee.casualLeave}<br/>
-                                        Medical : {employee.medicalLeave}<br/>
-                                    </td>
-                                    <td></td>
-                                    <td>
-
-                                        <button style={{marginLeft: "10px"}} onClick={ () => this.deleteEmployee(employee.id)} className="btn btn-danger">Decline </button>
-                                        <button style={{marginLeft: "10px"}} onClick={ () => this.viewEmployee(employee.id)} className="btn btn-info">Approve </button>
-                                    </td>
-                                </tr>
-                        )
-                    }
-                    </tbody>
-                </table>
         </div>
 
         )
