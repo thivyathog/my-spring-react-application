@@ -2,17 +2,38 @@ import React, { Component } from 'react'
 import EmployeeService from '../services/EmployeeService'
 import Calender from './Calender';
 import {format} from "date-fns";
+import TrackerService from '../services/TrackerService';
 
 class ViewEmployeeTracker extends Component {
     constructor(props) {
         super(props)
 
+
         this.state = {
-            employees: []
+            employees: [],
+            employee: {},
+            id: this.props.match.params.id,
+            employeeId: '',
+            status:'',
+            employeeName : '',
+            typeofLeave : '',
+            reason : ''
         }
-        this.addEmployee = this.addEmployee.bind(this);
-        this.editEmployee = this.editEmployee.bind(this);
-        this.deleteEmployee = this.deleteEmployee.bind(this);
+        this.updateEmployeeLeave = this.updateEmployeeLeave.bind(this);
+    }
+
+    updateEmployeeLeave = (id) => {
+        TrackerService.getEmployeeLeaveById(this.state.id).then( res => {
+            this.setState({employee: res.data}
+
+            );
+        })
+        let leaveForm = {id: this.state.employee.id, employeeId: this.state.employeeId, status:"approved",employeeName: this.state.employeeName,typeofLeave:this.state.typeofLeave,reason:this.state.reason};
+        console.log('employee => ' + JSON.stringify(leaveForm));
+        console.log('id => ' + JSON.stringify(this.state.id));
+        TrackerService.updateEmployeeLeave(leaveForm, id).then( res => {
+            this.props.history.push('/tacker');
+        });
     }
 
     deleteEmployee(id){
@@ -62,15 +83,15 @@ class ViewEmployeeTracker extends Component {
                                 <td> { employee.firstName}{employee.lastName} </td>
                                 <td> {employee.id}</td>
                                 <td> Annual</td>
-                                <td>Annaul : {employee.annualLeave}<br/>
+                                <td>Annual : {employee.annualLeave}<br/>
                                     casual : {employee.casualLeave}<br/>
                                     Medical : {employee.medicalLeave}<br/>
                                 </td>
                                 <td></td>
                                 <td>
 
-                                    <button style={{marginLeft: "10px"}} onClick={ () => this.deleteEmployee(employee.id)} className="btn btn-danger">Decline </button>
-                                    <button style={{marginLeft: "10px"}} onClick={ () => this.viewEmployee(employee.id)} className="btn btn-info">Approve </button>
+                                    <button style={{marginLeft: "10px"}} onClick={ () => this.updateEmployeeLeave(employee.id)} className="btn btn-danger">Approve </button>
+                                    <button style={{marginLeft: "10px"}} onClick={ () => this.viewEmployee(employee.id)} className="btn btn-info">Decline </button>
                                 </td>
                             </tr>
                     )

@@ -25,6 +25,10 @@ import net.javaguides.springboot.repository.EmployeeRepository;
 @RequestMapping("/v1/")
 public class EmployeeController {
 
+	public EmployeeRepository getEmployeeRepository() {
+		return employeeRepository;
+	}
+
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	

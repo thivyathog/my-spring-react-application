@@ -6,6 +6,8 @@ import java.util.Map;
 
 import net.javaguides.springboot.model.Employee;
 import net.javaguides.springboot.repository.EmployeeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,7 +28,7 @@ import net.javaguides.springboot.repository.TrackRepository;
 @RestController
 @RequestMapping("/v1/")
 public class LeaveFormController {
-
+    private static Logger logger = LoggerFactory.getLogger(LeaveFormController.class);
     @Autowired
     private TrackRepository trackRepository;
     @Autowired
@@ -55,6 +57,7 @@ public class LeaveFormController {
 
     @PutMapping("/track/{id}")
     public ResponseEntity<LeaveForm> updateLeaveForm(@PathVariable Long id, @RequestBody LeaveForm employeeDetails){
+        logger.info("your message");
         LeaveForm leaveForm = trackRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
 
@@ -62,7 +65,7 @@ public class LeaveFormController {
         Employee employee = employeeRepository.findById(employeeDetails.getEmployeeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
         leaveForm.setStatus(employeeDetails.getStatus());
-        switch( employeeDetails.getTypeofLeave()) {
+        switch( leaveForm.getTypeofLeave()) {
             case "Annual":
                 employee.setAnnualLeave(String.valueOf(Integer.parseInt(employee.getAnnualLeave())-1));
                 break;
@@ -73,6 +76,7 @@ public class LeaveFormController {
                 employee.setCasualLeave(String.valueOf(Integer.parseInt(employee.getCasualLeave())-1));
                 break;
         }
+
         Employee updatedEmploye = employeeRepository.save(employee);
         ResponseEntity.ok(updatedEmploye);
         LeaveForm updatedEmployee = trackRepository.save(leaveForm);
